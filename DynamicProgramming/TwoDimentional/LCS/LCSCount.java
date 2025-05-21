@@ -1,8 +1,8 @@
-package DynamicProgramming.TwoDimentional;
+package DynamicProgramming.TwoDimentional.LCS;
 
 import java.util.Arrays;
 
-public class LCS {
+public class LCSCount {
 
     /*
      * Input: s1 = "ABCDGH", s2 = "AEDFHR"
@@ -62,7 +62,7 @@ public class LCS {
      */
     
     public static int longestPalindromeSubsequence(String s) {
-		StringBuilder s2 = new StringBuilder();
+        StringBuilder s2 = new StringBuilder();
         s2.append(s);
 
         s2.reverse();
@@ -70,5 +70,36 @@ public class LCS {
         String s1 = s2.toString();
 
         return lcs(s, s1);
-	}
+    }
+
+    /*
+     * You are given 2 non-empty strings 's1' and 's2' consisting of lowercase English alphabets only.
+    
+    In one operation you can do either of the following on 's1':
+    
+    (1) Remove a character from any position in 's1'.
+    
+    (2) Add a character to any position in 's1'.
+    
+    Example:
+    Input: 's1' = "abcd", 's2' = "anc"
+    
+    Output: 3
+    
+    Explanation:
+    Here, 's1' = "abcd", 's2' = "anc".
+    In one operation remove 's1[3]', after this operation 's1' becomes "abc".    
+    In the second operation remove 's1[1]', after this operation 's1' becomes "ac".
+    In the third operation add 'n' in 's1[1]', after this operation 's1' becomes "anc"
+    
+    https://www.naukri.com/code360/problems/minimum-number-of-deletions-and-insertions_4244510?leftPanelTabValue=PROBLEM
+    
+     */
+    
+    public static int canYouMake(String s1, String s2) {
+        
+        int lcs = lcs(s1, s2);
+
+        return s1.length() + s2.length() - (2 * lcs);
+    }
 }
