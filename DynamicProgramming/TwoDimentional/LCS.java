@@ -36,6 +36,13 @@ public class LCS {
 
     }
 
+    /*
+     * Find the minimum number of characters needed to insert in 'str' to make it a palindromic string.
+     * Insertion can happen anywhere
+     * 
+     * https://www.naukri.com/code360/problems/minimum-insertions-to-make-palindrome_985293?leftPanelTabValue=PROBLEM
+     */
+
     public static int minInsertion(String str) {
         StringBuilder temp = new StringBuilder();
         temp.append(str);
