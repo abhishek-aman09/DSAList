@@ -1,4 +1,4 @@
-package DynamicProgramming.TwoDimentional;
+package DynamicProgramming.TwoDimentional.Grid;
 
 public class Knapsack01 {
 
