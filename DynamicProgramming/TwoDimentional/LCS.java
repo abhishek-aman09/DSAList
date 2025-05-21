@@ -36,6 +36,19 @@ public class LCS {
 
     }
 
+    public static int minInsertion(String str) {
+        StringBuilder temp = new StringBuilder();
+        temp.append(str);
+
+        temp.reverse();
+
+        String str1 = temp.toString();
+
+        int lengthOfLCS = lcs(str, str1);
+
+        return str.length() - lengthOfLCS;
+    }
+
     /*
      * https://www.naukri.com/code360/problems/longest-palindromic-subsequence_842787?leftPanelTabValue=PROBLEM
      * For longest palindromic subsequence, s2 will be reverse of s1.
