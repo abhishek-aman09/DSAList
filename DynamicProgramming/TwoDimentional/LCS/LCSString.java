@@ -116,7 +116,7 @@ public class LCSString {
 
     }
 
-    static class Pair {
+    public static class Pair {
         int first;
         int second;
 
