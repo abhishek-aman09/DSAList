@@ -1,0 +1,36 @@
+
+Bit magic notes
+
+* Negative numbers are stored in their 2's compliment inside computer
+e.g 12 id 1100. 32 bit rep - 00000000000000000000000000001100 
+1's compliment 11111111111111111111111111110011 (flip the bit)
+2's compliment (add 1) - 11111111111111111111111111110100 
+
+for 32 bit interger the first bit is to represent sign 0 - Positive, 1 - Negative
+
+>> and >>> operator
+>> is signed right operator. 100....100111 >> 2 is 10....001001 (Signed bit is preserved)
+>>> is unsigned right operator, 1000.....100111 >>> 2 is 00100....001001
+
+
+~ (not) operator
+Step 1 : Flip all the bits
+Step 2 : check the sign bit
+    if(negative) : Perform 2's compliment without changing the sign bit.
+    if(positive) : Stop and return the number.
+
+~(5) - 00000....0000101
+
+Step 1 - 1111111.....1111010
+Step 2 - Check sign bit (1)
+    1's compliment = 10000000....0000101
+    2's compliment = 1000000....00000110
+Return the number - 0110 = -6 
+
+Swap two number without using third variable
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
+
+Remove last set bit of n
+n = n & ( n - 1 );
