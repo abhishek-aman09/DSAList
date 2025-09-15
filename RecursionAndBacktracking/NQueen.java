@@ -62,10 +62,10 @@ public class NQueen {
 
             board[x][y] = null;
 
-            //calling next el in the column
+            //calling next el in the row
             nQueen(board, n, x + 1, y, ans);
         } else {
-            //calling next el in the column
+            //calling next el in the row
             nQueen(board, n, x + 1, y, ans);
         }
     }
