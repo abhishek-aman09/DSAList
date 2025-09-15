@@ -1,4 +1,4 @@
-package DynamicProgramming.OneDimentional;
+package DynamicProgramming.TwoDimentional;
 
 import java.util.Arrays;
 

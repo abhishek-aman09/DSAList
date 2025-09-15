@@ -1,9 +1,19 @@
 package LinkedLists;
 
+import java.util.PriorityQueue;
+
 public class MergeKList {
 
     // merge K lists
     // https://leetcode.com/problems/merge-k-sorted-lists/description/?envType=problem-list-v2&envId=linked-list
+
+    /*
+     * Intution : create a heap that will store the current el and the pos of 
+     * that el in araay of array. top the pop, and push the next el int the
+     * array at that pos into the queue.
+     * 
+     * Do this until the heap is empty.
+     */
 
     public static class ListNode {
         int val;
@@ -17,72 +27,50 @@ public class MergeKList {
 
         int n = lists.length;
 
-        ListNode head = null;
-        int val = Integer.MAX_VALUE;
+        ListNode head = null, temp = null;
 
-        for (ListNode curr : lists) {
-            if (curr != null) {
-                if (curr.val < val) {
-                    val = curr.val;
-                    head = curr;
-                }
+        PriorityQueue<NodeWithPos> pq = new PriorityQueue<>(
+                (a, b) ->  a.el - b.el
+        );
+
+        for (int i = 0; i < n; i++) {
+            if (lists[i] != null) {
+                pq.add(new NodeWithPos(lists[i].val, i));
             }
         }
 
-        ListNode currHead = head;
-        int currIndex = -1;
-        int countNull = 0;
-        boolean hasNodes = true;
+        while (!pq.isEmpty()) {
+            NodeWithPos curr = pq.poll();
 
-        while (hasNodes) {
-
-            countNull = 0;
-            int currMin = Integer.MAX_VALUE;
-            boolean wasHead = false;
-
-            for (int i = 0; i < n; i++) {
-                ListNode curr = lists[i];
-
-                if (curr == null) {
-                    countNull++;
-                    continue;
-                }
-
-                if (curr == head) {
-                    currIndex = i;
-                    lists[i] = lists[i].next;
-                    wasHead = true;
-                    break;
-                }
-
-                if (currMin > curr.val) {
-                    currIndex = i;
-                    currMin = curr.val;
-                }
-
+            if (head == null) {
+                head = lists[curr.pos];
+                temp = head;
+            } else {
+                temp.next = lists[curr.pos];
+                temp = temp.next;
             }
-
-            if (wasHead) {
-                continue;
-            }
-
-            if (countNull == n) {
-                hasNodes = false;
-                break;
-            }
-
-            currHead.next = lists[currIndex];
-            currHead = currHead.next;
-
-            lists[currIndex] = lists[currIndex].next;
             
+            lists[curr.pos] = lists[curr.pos].next;
+
+            if (lists[curr.pos] != null) {
+                pq.add(new NodeWithPos(lists[curr.pos].val, curr.pos));
+            }
         }
 
         return head;
+        
+    }
 
+    static class NodeWithPos {
+        final int el;
+        final int pos;
+
+        NodeWithPos(int el, int pos) {
+            this.el = el;
+            this.pos = pos;
+        }
     }
     
-
     public static void main(String[] args) {
 
         ListNode head1 = new ListNode(1);

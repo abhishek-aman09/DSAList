@@ -16,24 +16,6 @@ public class KthAncestor {
 
         preComputeAncestors();
     }
-    // tle method with nlog(n) approach
-    // public int getKthAncestor(int node, int k) {
-
-    //     if (node >= n || node <= 0) {
-    //         return -1;
-    //     }
-
-    //     while (k > 0) {
-    //         int currParent = parent[node];
-    //         if (currParent == -1) {
-    //             return -1;
-    //         }
-    //         node = currParent;
-    //         k--;
-    //     }
-
-    //     return node;
-    // }
 
     /*
     concept of binary lifting is used here.

@@ -14,8 +14,10 @@ public class LongestIncresingSubsequence {
         Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
         
         https://leetcode.com/problems/longest-increasing-subsequence/description/
-
+    
      */
+    
+    static int dp[][];
     
     public int lengthOfLIS(int[] nums) {
 
@@ -23,14 +25,9 @@ public class LongestIncresingSubsequence {
 
         int result = 0;
 
-        int dp[] = new int[n];
+        int dp1[] = new int[n];
 
-        Arrays.fill(dp, -1);
-
-        // Iteretively call solve block to get LIS for each index.
-        for (int i = 0; i < n; i++) {
-            result = Integer.max(result, solve(i, n, nums, dp));
-        }
+        Arrays.fill(dp1, -1);
 
         // Tabulation for the above memozisation
 
@@ -90,29 +87,6 @@ public class LongestIncresingSubsequence {
 
     }
 
-    // Memozization
-    int solve(int i, int n, int nums[], int dp[]) {
-
-        if (i == n) {
-            return 0;
-        }
-
-        if (dp[i] != -1) {
-            return dp[i];
-        }
-
-        int maxLis = 1;
-
-        // for each el from 0 to i, we need to get its LIS
-        // then keep a track of max using maxLis.
-        for (int j = 0; j < i; j++) {
-            if (nums[j] < nums[i]) {
-                maxLis = Integer.max(maxLis, solve(j, n, nums, dp) + 1);
-            }
-        }
-
-        return dp[i] = maxLis;
-    }
 
     // Alternate method similar to knapsack.
     // for each index i, if it is bigger than its caller method index value,
@@ -124,23 +98,27 @@ public class LongestIncresingSubsequence {
         if (ind == n) {
             return 0;
         }
+
+        if (dp[ind][prev_ind + 1] != -1) {
+            return dp[ind][prev_ind + 1];
+        }
         // not including the current element in LIS, calling next el directly
-        int maxLis = LISRecursive(ind + 1, prev_ind, n, nums);
+        int notTaken = LISRecursive(ind + 1, prev_ind, n, nums);
 
         // Including the curr el, if it is bigger than prev_ind or
         // if the prev_ind = -1, i.e ind points to the first element.
+        int taken = 0;
         if (prev_ind == -1 || nums[ind] > nums[prev_ind]) {
-            maxLis = Integer.max(maxLis, LISRecursive(ind + 1, ind, n, nums));
+            taken =  1 + LISRecursive(ind + 1, ind, n, nums);
         }
 
-        return maxLis;
+        dp[ind][prev_ind + 1] = Integer.max(notTaken, taken);
+        return dp[ind][prev_ind + 1];
     }
 
     int LISInterative(int nums[]) {
 
         int n = nums.length;
-
-        int dp[][] = new int[n + 1][n + 1];
 
         for (int ind = n - 1; ind >= 0; ind--) {
             for (int prev_ind = ind - 1; prev_ind >= -1; prev_ind--) {
@@ -161,9 +139,15 @@ public class LongestIncresingSubsequence {
     public static void main(String[] args) {
         LongestIncresingSubsequence obj = new LongestIncresingSubsequence();
 
-        int arr[] = { 13, 10, 4, 4 };
+        int arr[] = { 1, 2, 3, 4, 5, 6 };
+        int n = arr.length;
+        dp = new int[n + 1][n + 1];
 
-        System.out.println(obj.lengthOfLIS(arr));
+        for (int i = 0; i <= n; i++) {
+                Arrays.fill(dp[i], -1);
+        }
+
+        System.out.println(obj.LISRecursive(0, -1, arr.length, arr));
     }
 }
  
