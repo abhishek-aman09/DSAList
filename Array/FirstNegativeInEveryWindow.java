@@ -6,6 +6,16 @@ import java.util.List;
 import java.util.Queue;
 
 public class FirstNegativeInEveryWindow {
+/*
+https://www.geeksforgeeks.org/problems/first-negative-integer-in-every-window-of-size-k3345/1
+
+Given an array arr[]  and a positive integer k, find the first negative integer for each and every window(contiguous subarray) of size k.
+
+Note: If a window does not contain a negative integer, then return 0 for that window.
+
+Input: arr[] = [12, -1, -7, 8, -15, 30, 16, 28] , k = 3
+Output: [-1, -1, -7, -15, -15, 0] 
+*/
     
     static List<Integer> firstNegInt(int arr[], int k) {
 
