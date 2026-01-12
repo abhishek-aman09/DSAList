@@ -44,11 +44,6 @@ public class MergeTwoBST {
         int n = list1.size();
         int m = list2.size();
 
-        for(int el : list2) {
-            System.out.println(el + "  ");
-        }
-
-
         int i = 0, j = 0;
 
         while (i < n && j < m) {
