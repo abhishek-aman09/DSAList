@@ -63,7 +63,7 @@ public class MatrixChainMultiplication {
         int dp[][] = new int[n][n];
 
         // for tabulation, outermost loop has to start from n - 1 and 
-        // come in decreasin order as for each i, we have k = i which
+        // come in decreasing order as for each i, we have k = i which
         // goes to j. Thus we need the right value to be precomputed,
         // which is not possible if we start i from the left.
         for (int i = n - 1; i > 0; i--) { 
