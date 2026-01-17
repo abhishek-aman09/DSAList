@@ -1,0 +1,48 @@
+Deciding the price of a product is not an easy matter. If the price is high, then consumers get angry
+because they think it is too expensive. But if the price is low, then producers get angry because they
+do not earn enough money.
+In this problem, you have to bid for the price that produces the minimum number of angry people.
+For a given product, we have a set of producers and a set of consumers. Each producer has suggested
+his/her ideal price for the product. If your bid is below that ideal price, then the producer will get
+angry. Also, each consumer has suggested his/her ideal price for the product. If your bid is above that
+ideal price, then the consumer will get angry.
+You have to find the price that produces the minimum number of angry people (either producers or
+consumers). Your bid price should always be between 0 and 109
+. And if there is more than one optimal
+solution, you have to output the lowest one.
+Input
+The input consists of a series of test cases. The first line contains a number that indicates the number
+of test cases.
+Each test case consists of three lines. The first one contains two integers, P and C, indicating the
+number of producers and consumers of the product, respectively. These numbers will be between 0 and
+104
+. Then, the second line contains P integer numbers, the ideal prices for the producers. And the
+third line contains C integer numbers, the ideal prices for the consumers. The prices are between 1 and
+108
+.
+Output
+For each input case, you have to output two numbers separated by one space: the bid price that
+produces the minimum number of angry people; and the total number of angry people for that price.
+Remember that if there is more than one optimal solution, you have to output the one with lowest
+price; and the result cannot be a negative number.
+Sample Input
+4
+3 3
+10 16 12
+21 20 25
+4 3
+104 120 98 132
+120 88 140
+8 8
+36 27 52 72 36 37 26 38
+35 75 36 39 44 82 23 62
+0 2
+28 71
+Universidad de Valladolid OJ: 12965 – Angry Bids 2/2
+Sample Output
+16 0
+120 2
+38 5
+0 0
+
+4 3 3 10 16 12 21 20 25 4 3 104 120 98 132 120 88 140 8 8 36 27 52 72 36 37 26 38 35 75 36 39 44 82 23 62 0 2 28 71

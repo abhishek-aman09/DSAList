@@ -1,0 +1,35 @@
+
+For count of subset problem, if your array contains 0, then standard knapsack approach will not work.
+Reason
+
+let arr = {0, 0, 1} and sum = 1;
+
+in our method, as soon as our sum goes to 0, we return 0 without considering further 0.
+Hence we lose further permutation.
+
+
+int knapsack() {
+    if(sum == 0) {
+        return 0;
+    }
+}
+
+
+Solutions -
+
+1. Each zero just doubles the result as it can both be included or not without effecting sum.
+Hence we can do,
+ans * (2 ^ number of zeroes);
+
+2. Modify the base condition.
+remove sum == 0 condition and add
+
+if(n == 0) {
+    if(sum == 0 && arr[0] == 0) return 2; // if sum = 0 and el is 0, both taking and not taking result in a possibility
+    if(sum == 0 || arr[0] == sum) return 1; // if sum is 0 and first el is not then not taking is one possibility.
+                                            // if sum is equal to last el, then taking it will only give one possibility.
+    return 0; // return 0 for all other cases.
+}
+
+
+3. Start inner loop from 0, while filling the dp table.
