@@ -4,19 +4,31 @@ import java.util.Stack;
 
 public class LargestRectangle {
 
+    // https://leetcode.com/problems/largest-rectangle-in-histogram/description/
+    /*
+    Given an array of integers heights representing the histogram's bar height 
+    where the width of each bar is 1, return the area of the largest rectangle 
+    in the histogram.
     
+    Input: heights = [2,1,5,6,2,3]
+    Output: 10
+    Explanation: The above is a histogram where width of each bar is 1.
+    The largest rectangle is shown in the red area, which has an area = 10 units.
+    
+    Approach : Maitain a monotonic stack with smallest element at the top.
+    
+    keep popping el greater than curr el. For each pop, the current top of
+    stack is the previous smaller element (pse). calculate the area by multiplying
+    the val by (i - top of stack) * popped element.
+    
+    Outside the loop, the right boundary will be n. So, each el area will be
+    (n - top of stack) * popped element.
+    */
 
     public int largestRectangleArea(int[] heights) {
         int n = heights.length;
-        // linear time with 3 arrays and 3 traversal, calculate nse, pse and calculate
-        // int[] nseArr = nse(heights, n);
-        // int[] pseArr = pse(heights, n);
 
         int ans = Integer.MIN_VALUE;
-
-        // for (int i = 0; i < n; i++) {
-        //     ans = Integer.max(ans, heights[i] * (nseArr[i] - pseArr[i] - 1));
-        // }
 
         // method to calculate pse and nse in one traversal
         Stack<Integer> stk = new Stack<>();
