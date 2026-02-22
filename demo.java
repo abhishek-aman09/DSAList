@@ -1,13 +1,49 @@
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.TreeMap;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class demo {
+
+
+  public int minimumDifference(int[] nums, int k) {
+
+    int n = nums.length;
+
+    Arrays.sort(nums);
+
+    if (k == n) {
+      return nums[n - 1] - nums[0];
+    }
+
+    int ans = Integer.MAX_VALUE;
+
+    int j = 0;
+
+    for (int i = k - 1; i < n; i++) {
+      ans = Integer.min(ans, nums[i] - nums[j++]);
+    }
+
+    return ans;
+        
+  }
+
+
+
+
+
+
+
+
+
 
   public static void main(String[] args) {
 
