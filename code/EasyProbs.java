@@ -35,4 +35,8 @@ public class EasyProbs {
         
         return ans;
     }
+    public static void main(String[] args) {
+        EasyProbs obj = new EasyProbs();
+
+    }
 }
