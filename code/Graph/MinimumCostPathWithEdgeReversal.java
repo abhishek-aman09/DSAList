@@ -1,39 +1,56 @@
 package Graph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class MinimumCostPathWithEdgeReversal {
+
+    // https://leetcode.com/problems/minimum-cost-path-with-edge-reversals/description/
     
     public int minCost(int n, int[][] edges) {
 
-        int m = edges.length;
+        List<int[]>[] adj = new ArrayList[n];
+        for (int i = 0; i < n; i++) adj[i] = new ArrayList<>();
 
-        // Array of List of 2-index array to store v and w as pair
-        List<int[]>[] adj = (List<int[]>[]) new ArrayList[n];
-
-        //  Move all v and w as pair for u.
-        // also add a back edge from v to u with weight 2 * w.
-        for (int i = 0; i < m; i++) {
-            int u = edges[i][0];
-            int v = edges[i][1];
-            int w = edges[i][2];
-
-            if (adj[u] == null) {
-                adj[u] = new ArrayList<>();
-            }
-
-            if (adj[v] == null) {
-                adj[v] = new ArrayList<>();
-            }
-
-            adj[u].add(new int[] { v, w });
-            adj[v].add(new int[] { u, 2 * w });
-
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            int w = edge[2];
+            
+            adj[u].add(new int[]{v, w});
+            adj[v].add(new int[]{u, 2 * w});
         }
 
-        
+        long[] minCosts = new long[n];
+        Arrays.fill(minCosts, Long.MAX_VALUE);
+        minCosts[0] = 0;
 
+        PriorityQueue<long[]> pq = new PriorityQueue<>(Comparator.comparingLong(a -> a[0]));
+        pq.offer(new long[]{0, 0});
+
+        while (!pq.isEmpty()) {
+            long[] current = pq.poll();
+            long d = current[0];
+            int u = (int) current[1];
+
+            if (d > minCosts[u]) continue;
+            if (u == n - 1) return (int) d;
+
+            for (int[] neighbor : adj[u]) {
+                int v = neighbor[0];
+                int weight = neighbor[1];
+                
+                if (minCosts[u] + weight < minCosts[v]) {
+                    minCosts[v] = minCosts[u] + weight;
+                    pq.offer(new long[]{minCosts[v], v});
+                }
+            }
+        }
+
+        return minCosts[n - 1] == Long.MAX_VALUE ? -1 : (int) minCosts[n - 1];
     }
-
 }
+
