@@ -10,34 +10,34 @@ public class CountTrapeziod {
      *   X!
      * _______
      * 2! * (X - 2)!
+     * 
+     * which is equal to (x * (x - 1)) / 2
      */
 
-    public int countTrapezoids(int[][] points) {
+     public int countTrapezoids(int[][] points) {
 
-        int n = points.length;
-
-        int ans = 0;
-        int MOD = 1000000007;
+        long ans = 0l;
+        final long MOD = 1000000007l;
+        long runningPairsOflines = 0l;
 
         Map<Integer, Integer> freq = new HashMap<>();
 
-        for (int arr[] : points) {
+        for (int[] arr : points) {
             int y = arr[1];
             freq.put(y, freq.getOrDefault(y, 0) + 1);
         }
 
-        for (Map.Entry<Integer, Integer> pair : freq.entrySet()) {
-            int y = pair.getKey();
-            int val = pair.getValue();
+        for (Integer val : freq.values()) {
+            if (val >= 2) {
+                long currPairOfLines = (long) val * (val - 1) / 2;
 
-            if (val < 2) {
-                freq
+                ans = (ans + ((currPairOfLines % MOD) * (runningPairsOflines % MOD))) % MOD;
+
+                runningPairsOflines = (runningPairsOflines + currPairOfLines) % MOD;
             }
-
-            val = ((val % MOD * (val - 1) % MOD) / 2) % MOD;
-            pair.setValue(val);
         }
 
+        return (int)ans;
+
     }
-    
 }

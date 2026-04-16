@@ -7,8 +7,12 @@ public class SubarraySumEqualsK {
     /* https://leetcode.com/problems/subarray-sum-equals-k/description/
         Input: nums = [1,1,1], k = 2
         Output: 2
-
-        Use hashmap 
+    
+        Approach : User prefix sum and hashmap based approach
+        
+        calculate prefix sum and strore them in map with frequency
+        for any sum chech the rem you need to get the su of subarray
+        if it exist in map, add the freq in the ans.
     */
     
     public int subarraySum(int[] nums, int goal) {
@@ -29,7 +33,6 @@ public class SubarraySumEqualsK {
             if (freq.containsKey(rem)) {
                 ans += freq.get(rem);
             }
-            // System.out.println(sum);
 
             freq.put(sum, freq.getOrDefault(sum, 0) + 1);
         }
