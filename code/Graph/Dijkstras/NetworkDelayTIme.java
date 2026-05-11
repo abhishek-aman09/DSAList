@@ -25,8 +25,6 @@ public class NetworkDelayTIme {
     static final int INF = Integer.MAX_VALUE / 4;
     public int networkDelayTime(int[][] times, int n, int k) {
 
-        int m = times.length;
-
         List<Node> adj[] = new ArrayList[n + 1];
 
         for (int row[] : times) {
