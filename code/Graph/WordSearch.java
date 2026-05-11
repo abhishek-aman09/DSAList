@@ -1,4 +1,4 @@
-package DynamicProgramming.TwoDimentional.Grid;
+package Graph;
 
 public class WordSearch {
 
