@@ -12,7 +12,9 @@ public class EmployeeFreeTime {
     
     There are ‘N’ Problem Setters in Coding Ninjas, Each of them has a unique id between 0 to N-1. A Problem Setter works in multiple non-overlapping time intervals during a day.
     Formally, A Problem Setter having id ‘i’ works in ‘Ki’ non-overlapping intervals of the form [T1, T2], [T3, T4] ... [T(2ki-2), T(2ki-1)], where Ti is in between [0, 10^8] and Ti <= T(i+1). A day in Coding ninjas start from time 0 and end at time 10^8 (both inclusive).
-    You are given ‘N’ sorted lists of non-overlapping intervals, where the ith list gives a schedule (list of intervals in which the problem setter works) of a Problem Setter having id ‘i’. Your task is to find a sorted list of non-overlapping intervals in which all problem setters are free. If there are multiple possible such lists, output the list which is minimum in length.
+    You are given ‘N’ sorted lists of non-overlapping intervals, where the ith list gives a schedule (list of intervals in which the problem setter works) of a Problem Setter having id ‘i’. 
+    Your task is to find a sorted list of non-overlapping intervals in which all problem setters are free. 
+    If there are multiple possible such lists, output the list which is minimum in length.
     Note :
     1. In sorted order interval [T1, T2] comes before [T3, T4] if either T1 < T3, or (T1 == T3  and T2 < T4).
     2. An interval [T1, T2] represents, time T1, T1+1, T1+2, ... T2, i.e all integers between T1, T2 both T1 and T2 inclusive.  
@@ -50,7 +52,7 @@ public class EmployeeFreeTime {
     
     2. fix heap size to k, put only one interval from each list, process it and then enter next.
     
-
+    
     
     */
 
