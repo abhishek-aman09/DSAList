@@ -1,4 +1,4 @@
-package Graph.Dijkstras;
+package Google.Graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;

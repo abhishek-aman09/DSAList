@@ -56,7 +56,7 @@ public class WordLadder {
             String word = curr.word;
             int dist = curr.dist;
 
-            // conver curr word to char array
+            // convert curr word to char array
             char[] str = word.toCharArray();
 
             // traverse over length of curr word
