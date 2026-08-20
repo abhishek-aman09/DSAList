@@ -37,7 +37,7 @@ public class MostStonesRemovedWithSameRowCol {
     i.push(j) and j.push(i)
     formed graph 0 -> 1, 2 | 1 -> 0 | 2 -> 0
 
-    now we perform dfs to count the number of nodes we can remove. we can only remove a node if it has at least one child
+    now we perform dfs to count the number of nodes we can remove. we can only remove a node if it has at least one unvisited child
     */
 
 

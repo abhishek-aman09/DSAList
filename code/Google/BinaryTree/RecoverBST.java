@@ -36,53 +36,11 @@ public class RecoverBST {
     
     public void recoverTree(TreeNode root) {
 
-        TreeNode candidateA = null;
-        TreeNode candidateB = null;
-
-        List<TreeNode> list = new ArrayList<>();
-
-        inorder(root, list);
-
-        // find anamoly nodes in the meant to be sorted list
-        if (list.get(0).val > list.get(1).val) {
-            candidateA = list.get(0);
-        }
-
-        for (int i = 1; i < list.size() - 1; i++) {
-            TreeNode currVal = list.get(i);
-            TreeNode prevVal = list.get(i - 1);
-            TreeNode nextVal = list.get(i + 1);
-
-            if (currVal.val < prevVal.val || currVal.val > nextVal.val) {
-                if (candidateA == null) {
-                    candidateA = currVal;
-                } else {
-                    candidateB = currVal;
-                }
-            }
-        }
-
-        if (list.get(list.size() - 1).val < list.get(list.size() - 2).val) {
-            candidateB = list.get(list.size() - 1);
-        }
-
         // swap the values of the node
-        int temp = candidateA.val;
-        candidateA.val = candidateB.val;
-        candidateB.val = temp;
+        int temp = first.val;
+        first.val = second.val;
+        second.val = temp;
 
-    }
-    // linear space and linear time
-    private void inorder(TreeNode root, List<TreeNode> list) {
-        if (root == null) {
-            return;
-        }
-
-        inorder(root.left, list);
-
-        list.add(root);
-
-        inorder(root.right, list);
     }
 
     // linear time and constant space 
