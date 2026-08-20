@@ -55,7 +55,7 @@ public class VerticalOrderSortedByLevel {
         Queue<Pair<TreeNode, Integer>> bfsQueue = new LinkedList<>();
 
         // Level wise sorted map of row wise sorted map of nodes
-        Map<Integer, TreeMap<Integer, List<Integer>>> levelAndRowwiseSortedMap = new TreeMap<>();
+        Map<Integer, TreeMap<Integer, List<Integer>>> levelAndRowWiseSortedMap = new TreeMap<>();
 
         List<List<Integer>> ans = new LinkedList<>();
 
@@ -80,16 +80,16 @@ public class VerticalOrderSortedByLevel {
             int currLevel = curr.level;
 
             // if the current level is not present in tree, assign with empty map
-            if(!levelAndRowwiseSortedMap.containsKey(currLevel)) {
-                levelAndRowwiseSortedMap.put(currLevel, new TreeMap<>());
+            if(!levelAndRowWiseSortedMap.containsKey(currLevel)) {
+                levelAndRowWiseSortedMap.put(currLevel, new TreeMap<>());
             }
 
             // if the current row in current level is not present, assign with empty list
-            if(!levelAndRowwiseSortedMap.get(currLevel).containsKey(currRowNum)) {
-                levelAndRowwiseSortedMap.get(currLevel).put(currRowNum, new ArrayList<>());
+            if(!levelAndRowWiseSortedMap.get(currLevel).containsKey(currRowNum)) {
+                levelAndRowWiseSortedMap.get(currLevel).put(currRowNum, new ArrayList<>());
             }
 
-            List<Integer> temp = levelAndRowwiseSortedMap.get(currLevel).get(currRowNum); // fetch the list of nodes
+            List<Integer> temp = levelAndRowWiseSortedMap.get(currLevel).get(currRowNum); // fetch the list of nodes
             temp.add(currNode.val); // add current node to current row list
 
             if(currNode.left != null) {  // if the left of current node is not null, push it into the queue
@@ -101,7 +101,7 @@ public class VerticalOrderSortedByLevel {
             }
         }
 
-        for (Map.Entry<Integer, TreeMap<Integer, List<Integer>>> levelEntry : levelAndRowwiseSortedMap.entrySet()) {
+        for (Map.Entry<Integer, TreeMap<Integer, List<Integer>>> levelEntry : levelAndRowWiseSortedMap.entrySet()) {
 
             List<Integer> levelNodes = new ArrayList<>();
             

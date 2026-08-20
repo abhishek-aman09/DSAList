@@ -30,11 +30,13 @@ public class DungeonGame {
     Explanation: The initial health of the knight must be at least 7 if he follows the optimal path: 
     RIGHT-> RIGHT -> DOWN -> DOWN.
     
-    
+    Approach : Standard dp with few conditions, you can go to a cell only if you have atleast one unit of energy
+    left. If the cell has positive value, you only need one (minimum) unit to enter, else you would need 
+    1 - (negative cell value) to enter into the cell.
     
     */
     private static final int MAX_VAL = Integer.MAX_VALUE / 10000;
-    public int calculateMinimumHP(int[][] dungeon) {
+    public int calculateMinimumHP(int[][] dungeon) { // standard dp block
 
         int n = dungeon.length;
         int m = dungeon[0].length;
@@ -51,22 +53,25 @@ public class DungeonGame {
 
     private int helper(int i, int j, int n, int m, int[][] dungeon, int[][] dp) {
 
-        if ( i >= n || j >= m ) {
-            return MAX_VAL;
+        if ( i >= n || j >= m ) { // if we are out of bounds, return some max value which cannot be breached
+            return MAX_VAL; 
         }
         
-        if (i == n - 1 && j == m - 1) {
-            return Math.max(1, 1 - dungeon[i][j]);
+        if (i == n - 1 && j == m - 1) { // when we have reached the last cell, if it is a positive cell, return one
+            return Math.max(1, 1 - dungeon[i][j]); // else, 1 - cellVal will be returned.
         }
 
         if (dp[i][j] != -1) {
             return dp[i][j];
         }
 
-        int right = helper(i, j + 1, n, m, dungeon, dp);
-        int down = helper(i + 1, j, n, m, dungeon, dp);
+        int right = helper(i, j + 1, n, m, dungeon, dp); // check of right cell
+        int down = helper(i + 1, j, n, m, dungeon, dp); // check of down cell
 
-        return dp[i][j] = Integer.max(1, Integer.min(right, down) - dungeon[i][j]);
+        return dp[i][j] = Integer.max(1, Integer.min(right, down) - dungeon[i][j]); // return min of 1 (for positive cell)
+        // and min(right, down) - currentCellValue (for positive cells we will check what min value we need for future
+        // and the value of curr cell, if left is more than right, we get a positive value, if currVal is negative, we
+        // have a positive val)
     }
     
 }

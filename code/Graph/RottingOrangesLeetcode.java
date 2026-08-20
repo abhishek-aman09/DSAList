@@ -21,7 +21,7 @@ public class RottingOrangesLeetcode {
     
     Approach : Create a queue to store cell that contains rotten oranges.
     
-    Do a level order traversal and push all adjacent 1 into the queue.
+    Do a level order traversal and push all adjacent 2 into the queue.
     push null at end of each level to mark the level. As soon as you encounter
     a null, you completed the level, increment timer by one
     

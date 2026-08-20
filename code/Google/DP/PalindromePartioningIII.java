@@ -12,12 +12,15 @@ public class PalindromePartioningIII {
     First, change some characters of s to other lowercase English letters.
     Then divide s into k non-empty disjoint substrings such that each substring is a palindrome.
     Return the minimal number of characters that you need to change to divide the string.
-   
+    
     Input: s = "abc", k = 2
     Output: 1
     Explanation: You can split the string into "ab" and "c", and change 1 character in "ab" to make it palindrome.
     
+    Approch : More of a straight implementation of MCM, you run outer loop from 0 to n - 1, for each i, form a string
+    from starting index to i, check how many characters need to change to make it palindrome, and call the right with one partition less.
 
+    return the min number of partitions required.
     */
 
     private static final int MAX_VAL = Integer.MAX_VALUE / 100;
@@ -38,11 +41,11 @@ public class PalindromePartioningIII {
 
     private int helper(int curr, int n, int remK, String str, int[][] dp) {
 
-        if (curr >= n) {
+        if (curr >= n) { // if we have reached to the end, check if we have used up all the partitions
             return remK == 0 ? 0 : MAX_VAL;
         }
 
-        if (remK < 0) {
+        if (remK < 0) { // if no partitions are left, return a max num
             return MAX_VAL;
         }
         
@@ -50,18 +53,19 @@ public class PalindromePartioningIII {
             return dp[curr][remK];
         }
 
-        int minSwaps = MAX_VAL;
+        int minSwaps = MAX_VAL; // number to store minimun number of swaps needed
 
         for (int i = curr + 1; i <= n; i++) {
 
-            String left = str.substring(curr, i);
+            String left = str.substring(curr, i); // form a substring from start index to curr
 
-            int countSwaps = checkForPalindrome(left) + helper(i, n, remK - 1, str, dp);
+            int countSwaps = checkForPalindrome(left) + helper(i, n, remK - 1, str, dp); // check for swaps 
+            // needed for curr string and call recursively with pone less partition
 
-            minSwaps = Math.min(countSwaps, minSwaps);
+            minSwaps = Math.min(countSwaps, minSwaps); // keep checking minimum
         }
 
-        return dp[curr][remK] = minSwaps;
+        return dp[curr][remK] = minSwaps; // return the min
     }
     
     private int checkForPalindrome(String str) {
