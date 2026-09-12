@@ -57,36 +57,39 @@ public class InsertIntervals {
         // flag to check if the interval is merged, we do not merge it with another interval once merged.
         boolean isMerged = false;
 
+        int newStart = newInterval[0];
+        int newEnd = newInterval[1];
+
         while(i < n) {
-            int end = intervals[i][1];
-            int start = intervals[i][0];
+            int currEnd = intervals[i][1];
+            int currStart = intervals[i][0];
 
             // if the start of new is less than curr end and end of new is greater than curr end and not merged
             // i.e we cannot merge new 4, 5 in curr 7, 8. New should be in range.
-            if(end >= newInterval[0] && start <= newInterval[1] && !isMerged) {
+            if(currEnd >= newStart && currStart <= newEnd && !isMerged) {
                 isMerged = true;
-                start = Integer.min(start, newInterval[0]); // start will be the min of two starts
-                end = Integer.max(end, newInterval[1]); // end will be max of two ends.
+                currStart = Integer.min(currStart, newStart); // start will be the min of two starts
+                currEnd = Integer.max(currEnd, newEnd); // end will be max of two ends.
 
                 // perform merge intervals till condition satisfies.
                 int j = i + 1;
-                while(j < n && intervals[j][0] <= end) {
-                    end = Integer.max(end, intervals[j][1]);
+                while(j < n && intervals[j][0] <= currEnd) {
+                    currEnd = Integer.max(currEnd, intervals[j][1]);
                     j++;
                 }
 
                 i = j;
                 // this check is for conditions like curr = 1,2 | 5,6 and new is 3,4
                 // then they should be inserted as independent pair in between
-            } else if(!isMerged && end > newInterval[0] && start > newInterval[1]) {
+            } else if(!isMerged && currEnd > newStart && currStart > newEnd) {
                 isMerged = true;
-                result.add(new int[] {newInterval[0], newInterval[1]});
+                result.add(new int[] {newStart, newEnd});
                 i++;
             } else {
                 i++;
             }
-            // 
-            result.add(new int[] {start, end});
+            // add the current interval
+            result.add(new int[] {currStart, currEnd});
         }
 
         int ans[][] = new int[result.size()][];

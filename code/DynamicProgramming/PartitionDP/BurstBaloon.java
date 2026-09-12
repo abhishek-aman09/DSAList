@@ -26,6 +26,10 @@ public class BurstBaloon {
     of curr left baloon is the right of curr baloon, hence the codition
     cost = nums[i - 1] * nums[k] * nums[j + 1].
     
+    for each k between i and j, we assume that k will the last baloon in the process to burst so that we are able to independently calculate left and right subpart.
+    if k is last, we call left(i, k - 1) as helper(i, j) so that the current kth baloon becomes right end for the left subpart when we do (j + 1) while calculation
+    similarly for right we pass right(k + 1, j) as i - 1 will point to current baloon as the left one.
+    
     */
     
 
@@ -74,11 +78,34 @@ public class BurstBaloon {
 
         int maxCost = Integer.MIN_VALUE;
 
+        // We iterate over every possible balloon k in range [i, j]
+        // and assume 'k' is the LAST balloon to be burst in this entire subarray [i, j].
         for (int k = i; k <= j; k++) {
 
-            int currCost = (nums[i - 1] * nums[k] * nums[j + 1]) + helper(nums, i, k - 1, n, dp)
-                    + helper(nums, k + 1, j, n, dp);
+            // WHY nums[i - 1] * nums[k] * nums[j + 1]?
+            // Since 'k' is the LAST balloon standing in the interval [i, j]:
+            // - All balloons between i and k-1 are already popped.
+            // - All balloons between k+1 and j are already popped.
+            // Therefore, the immediate unpopped neighbor to the left of k is nums[i - 1],
+            // and the immediate unpopped neighbor to the right of k is nums[j + 1].
+            int burstCost = nums[i - 1] * nums[k] * nums[j + 1];
 
+            // SUBPROBLEM 1: helper(nums, i, k - 1, n, dp)
+            // Solves the optimal cost of bursting all balloons in [i, k - 1].
+            // - When k == i: calls helper(nums, i, i - 1), which hits (i > j) -> returns 0.
+            //   This correctly reflects that there are no balloons to the left of k.
+            int leftCost = helper(nums, i, k - 1, n, dp);
+
+            // SUBPROBLEM 2: helper(nums, k + 1, j, n, dp)
+            // Solves the optimal cost of bursting all balloons in [k + 1, j].
+            // - When k == j: calls helper(nums, j + 1, j), which hits (i > j) -> returns 0.
+            //   This correctly reflects that there are no balloons to the right of k.
+            int rightCost = helper(nums, k + 1, j, n, dp);
+
+            // Total cost if balloon k is popped last
+            int currCost = burstCost + leftCost + rightCost;
+
+            // Maximize across all candidates for the 'last' balloon
             if (currCost > maxCost) {
                 maxCost = currCost;
             }

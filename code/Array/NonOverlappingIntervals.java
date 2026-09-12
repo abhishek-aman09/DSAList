@@ -12,7 +12,8 @@ public class NonOverlappingIntervals {
     Output: 1
     Explanation: [1,3] can be removed and the rest of the intervals are non-overlapping.
     
-    
+    approach : sort the array on basis of end time and then start time. run a loop, see how many overlapping intervals are there, count them.
+    why sorting on end time? to minimize the interval width.
     */
     
     public int eraseOverlapIntervals(int[][] intervals) {

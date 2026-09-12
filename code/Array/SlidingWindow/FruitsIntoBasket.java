@@ -14,6 +14,18 @@ import java.util.Map;
     Once you reach a tree with fruit that cannot fit in your baskets, you must stop.
     Given the integer array fruits, return the maximum number of fruits you can pick.
 
+    Input: fruits = [1,2,3,2,2]
+    Output: 4
+    Explanation: We can pick from trees [2,3,2,2].
+    If we had started at the first tree, we would only pick from trees [1,2].
+
+    approach : you can pick maximum 2 types of fruit (can be extended to K types).
+    For each index i, put it into the map, chech the size of the map.
+    maintain a left pointer starting from zero, continue removing fruits from left till the map size becomes 2(k) again.
+
+    current fruit you can take will be (i - left + 1), keep a max pointer
+
+
  */
 public class FruitsIntoBasket {
     
@@ -21,14 +33,15 @@ public class FruitsIntoBasket {
         
         int n = fruits.length;
 
+        // map to store freq of fruits
         Map<Integer, Integer> freq = new HashMap<>();
 
         int left = 0, ans = 0;
 
         for (int i = 0; i < n; i++) {
-            freq.put(fruits[i], freq.getOrDefault(fruits[i], 0) + 1);
+            freq.put(fruits[i], freq.getOrDefault(fruits[i], 0) + 1); // put the fruit into the map
 
-            while (freq.size() > 2) {
+            while (freq.size() > 2) { // bring back the size of map to 2 by removing fruits from left
                 freq.put(fruits[left], freq.get(fruits[left]) - 1);
                 if (freq.get(fruits[left]) == 0) {
                     freq.remove(fruits[left]);
@@ -36,7 +49,7 @@ public class FruitsIntoBasket {
                 left++;
             }
 
-            ans = Integer.max(ans, i - left + 1);
+            ans = Integer.max(ans, i - left + 1); // store the max
         }
 
         return ans;

@@ -17,12 +17,8 @@ public class ContiguousSubarraySum {
         An integer x is a multiple of k if there exists an integer n such that x = n * k. 0 is always a multiple of k.
         
         maths : we need to find if there exist an i,j (i < j) where (pre[i] - pre[j]) % k == 0.
-        i.e pre[i] % k == pre[j] % k.
-    
-        special conditions 
-        if there exist a 0 then pre[i] == pre[j] for j = i + 1 but prefix sum is not divisible by k;
-        but if there exists two 0 then there does exist a subarray i.e. [0, 0]. So,
-        check of freq of each pre[i] % k. if it is > 2, return true.
+        i.e pre[i] % k == pre[j] % k and j != i + 1.
+
     */
     
     public boolean checkSubarraySum(int[] nums, int k) {
@@ -30,28 +26,30 @@ public class ContiguousSubarraySum {
         int n = nums.length;
 
         int pre[] = new int[n];
-        Map<Integer, Integer> freq = new HashMap<>();
 
-        pre[0] = nums[0];
+        // map to store the raminder of the prefix sum
+        Map<Integer, Integer> remFreq = new HashMap<>();
+        
+        pre[0] = nums[0] % k;
 
-        for (int i = 1; i < n; i++) {
-            pre[i] = pre[i - 1] + nums[i];
-            // if the prefix sum is divisble by k, return true
-            if (pre[i] % k == 0) {
-                return true;
-            }
-        }
+        remFreq.put(pre[0], 1); // put the remainder of to the map
 
-        for (int i = 0; i < n; i++) {
-            pre[i] = pre[i] % k;
-            // 0 repeats the pre sum so if there exist one 0, do not cosider it
-            if (freq.containsKey(pre[i]) && nums[i] > 0) {
+        for(int i = 1; i < n; i++) {
+            pre[i] = (pre[i - 1] + nums[i]) % k;
+            if(pre[i] == 0) { // check if the prefix is a multiple of k
                 return true;
             }
 
-            freq.put(pre[i], freq.getOrDefault(pre[i], 0) + 1);
-            // if freq of any pre sum is greater than 2, return true
-            if (freq.get(pre[i]) > 2) {
+            int currRem = pre[i]; 
+
+            if (remFreq.containsKey(currRem) && pre[i - 1] != currRem) { // if the map contains same prefix but it was not in last index. To handle conditions like 3, 1, 12 divisible by 6
+                // or 2, 1, 0 divisble by 4
+                return true;
+            }
+
+            remFreq.put(currRem, remFreq.getOrDefault(currRem, 0) + 1);
+
+            if (remFreq.get(currRem) > 2) { // if total count of prefix after adding current is more than two even if pre[i] == pre[i - 1], we return true.
                 return true;
             }
         }

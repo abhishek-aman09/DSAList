@@ -33,6 +33,8 @@ public class SearchInRotatedArrayII {
 
         int n = nums.length;
 
+        // QUICK BOUNDARY CHECKS:
+        // Immediate early exit if target matches either endpoint.
         if (target == nums[0])
             return true;
 
@@ -41,18 +43,25 @@ public class SearchInRotatedArrayII {
 
         int pivot = -1;
 
+        // HEURISTIC CHECK FOR DUPLICATES:
+        // If mid-element differs from rightmost element, standard binary search works.
+        // Otherwise, duplicates might hide the inflection point, so recurse.
         if (nums[(n - 1) / 2] != nums[n - 1]) {
             pivot = findPivot(nums, 0, n - 1);
         } else {
             pivot = findRecPivot(nums, 0, n - 1);
         }
 
+        // If no pivot was identified, search the whole array.
         if (pivot == -1)
             return getIndex(nums, 0, n - 1, target);
 
+        // Search the two independently sorted subarrays split at 'pivot'.
         return getIndex(nums, 0, pivot - 1, target) || getIndex(nums, pivot, n - 1, target);
     }
 
+    // RECURSIVE PIVOT SEARCH:
+    // Used when duplicate values obscure which subarray contains the rotation drop.
     private int findRecPivot(int nums[], int l, int r) {
         if (l >= r) {
             return -1;
@@ -60,7 +69,9 @@ public class SearchInRotatedArrayII {
 
         int mid = l + (r - l) / 2;
 
-        if(nums[mid] == nums[r]) {
+        // If mid matches the right boundary, the drop could be in either half:
+        // e.g., [1, 1, 1, 0, 1] vs [1, 0, 1, 1, 1]. Recurse into both.
+        if (nums[mid] == nums[r]) {
             int left = findRecPivot(nums, l, mid);
             int right = findRecPivot(nums, mid + 1, r);
 
@@ -69,10 +80,13 @@ public class SearchInRotatedArrayII {
             }
             return right;
         } else {
+            // Once the ambiguity is broken, delegate back to iterative binary search.
             return findPivot(nums, l, r);
         }
     }
-    
+
+    // ITERATIVE PIVOT FINDER:
+    // Finds the index of the smallest element in a rotated sorted array without duplicates.
     private int findPivot(int nums[], int l, int r) {
 
         int pivot = -1;
@@ -80,12 +94,14 @@ public class SearchInRotatedArrayII {
         while (l <= r) {
             int mid = l + (r - l) / 2;
 
+            // If mid <= r, the inflection point lies at or to the left of mid.
             if (nums[mid] <= nums[r]) {
                 if (pivot == -1 || nums[pivot] >= nums[mid]) {
                     pivot = mid;
                 }
-                r = mid - 1;
+                r = mid - 1; // Shrink search range to the left
             } else {
+                // Drop occurs in the right half
                 l = mid + 1;
             }
         }
