@@ -30,9 +30,11 @@ public class MinimumCostToCutStick {
             return 0;
         }
 
-        // defing a new array with boundary
+        // 1. BOUNDARY PADDING:
+        // A stick segment requires two endpoints to determine its length.
+        // We append virtual cut points at position 0 (left end of stick)
+        // and position n (right end of stick).
         int cutsWithBoundary[] = new int[len + 2];
-
         cutsWithBoundary[0] = 0;
         cutsWithBoundary[len + 1] = n;
 
@@ -40,37 +42,60 @@ public class MinimumCostToCutStick {
             cutsWithBoundary[i] = cuts[i - 1];
         }
 
+        // 2. SORTING IS MANDATORY:
+        // Sorting ensures that any cut position k strictly falls between
+        // cut points i and j if and only if i < k < j.
+        // Without sorting, a cut at index k might not physically divide the 
+        // segment defined by boundaries cuts[i] and cuts[j].
         Arrays.sort(cutsWithBoundary);
 
         int dp[][] = new int[len + 2][len + 2];
-
-        for(int row[] : dp) {
+        for (int row[] : dp) {
             Arrays.fill(row, -1);
         }
 
-
+        // Initial problem: stick bounded by cut 0 (position 0) and cut len+1 (position n)
         return helper(cutsWithBoundary, 0, len + 1, dp);
-        
     }
 
     private int helper(int cuts[], int i, int j, int dp[][]) {
-        // here for each call i is left boundary and j is the right one
-        // base condition is to check that we have at least one cut point
-        // between i and j
+
+        // BASE CASE: No cuts remaining inside the current segment.
+        // If j - i <= 1, indices i and j are adjacent in the sorted array.
+        // There are no internal cut points between them (e.g., boundaries 0 and 1).
+        // Making 0 cuts costs 0.
         if (j - i <= 1) {
             return 0;
         }
 
+        // MEMOIZATION CHECK:
+        // dp[i][j] stores the minimum cost to perform all remaining cuts
+        // strictly strictly strictly between boundary cuts[i] and cuts[j].
         if (dp[i][j] != -1) {
             return dp[i][j];
         }
 
         int minCost = Integer.MAX_VALUE;
 
-        // As i and j are boundaries, k will go from i + 1 to j - 1 (excluding the boundaries)
-        // the sub calls will also be made to left cut i.e i to k and right cut i.e k to j
+        // TRY EVERY CANDIDATE CUT 'k':
+        // Here, 'k' is chosen as the FIRST cut made on the stick segment [cuts[i], cuts[j]].
         for (int k = i + 1; k < j; k++) {
-            int cost = cuts[j] - cuts[i] + helper(cuts, i, k, dp) + helper(cuts, k , j, dp);
+
+            // 1. COST OF THE CURRENT CUT:
+            // By problem definition, cutting a stick costs its current length:
+            // length = cuts[j] - cuts[i].
+            //
+            // 2. SUBPROBLEM DECOMPOSITION:
+            // Making cut 'k' splits the current stick into two independent sub-sticks:
+            //   - Left stick:  bounded by cuts[i] and cuts[k] -> helper(cuts, i, k, dp)
+            //   - Right stick: bounded by cuts[k] and cuts[j] -> helper(cuts, k, j, dp)
+            // Notice that 'k' acts as the right boundary for the left segment
+            // and the left boundary for the right segment.
+            int cost = (cuts[j] - cuts[i]) 
+                    + helper(cuts, i, k, dp) 
+                    + helper(cuts, k, j, dp);
+
+            // Track the minimum cost across all choices of first cut 'k'
             if (cost < minCost) {
                 minCost = cost;
             }

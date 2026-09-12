@@ -3,6 +3,8 @@ package Array;
 public class RotateFunction {
     
     /*
+    https://leetcode.com/problems/rotate-function/description/?envType=problem-list-v2&envId=array
+    
      * You are given an integer array nums of length n.
     
     Assume arrk to be an array obtained by rotating nums by k positions clock-wise.
@@ -12,8 +14,9 @@ public class RotateFunction {
     Return the maximum value of F(0), F(1), ..., F(n-1).
     
     The test cases are generated so that the answer fits in a 32-bit integer.
-    https://leetcode.com/problems/rotate-function/description/?envType=problem-list-v2&envId=array
     
+    approach : find the totalSum and rotateSum of the array. start traversing from right, as rotation is done clockwise.
+    the last element weight drops by (n - 1) * el. rest of the array elements value increase by one unit. Hence the total increment in value is equal to totalSum.
      */
     
     public static int maxRotateFunction(int[] nums) {
@@ -27,15 +30,15 @@ public class RotateFunction {
         int sumOfArray = 0;
 
         for (int i = 0; i < n; i++) {
-            ans += (i * nums[i]);
-            sumOfArray += nums[i];
+            ans += (i * nums[i]); // represents the rotateSum
+            sumOfArray += nums[i]; // represents the totalSum
         }
 
         int temp = ans;
 
         for (int i = n - 1; i > 0; i--) {
-            int el = nums[i];
-            temp = temp + (sumOfArray - (n * el));
+            int el = nums[i]; 
+            temp = temp + (sumOfArray - (n * el)); // temp will be updated by sumArray - (n * el).
             ans = Integer.max(ans, temp);
         }
 

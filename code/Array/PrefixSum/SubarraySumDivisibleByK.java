@@ -14,7 +14,7 @@ public class SubarraySumDivisibleByK {
         Explanation: There are 7 subarrays with a sum divisible by k = 5:
         [4, 5, 0, -2, -3, 1], [5], [5, 0], [5, 0, -2, -3], [0], [0, -2, -3], [-2, -3]
     
-        approach is similar to subarray sum equals to k, except instead of
+        approach is similar to subarray sum equals to k (where we use to store the frequency of difference in the hashmap), except instead of
         doing rem = sum - nums[i] we need to do rem = sum % nums[i] as we
         need to count frequency of a remainder as we move on the array.
     */
@@ -35,14 +35,15 @@ public class SubarraySumDivisibleByK {
         int ans = 0;
 
         for (int i = 0; i < n; i++) {
-            sum += nums[i];
+            sum += nums[i]; // get the sum
             // need to do this to handle negative remainders.
             int remainder = ((sum % k) + k) % k;
 
+            // check if remainder is present and what is its freq
             if (freqOfRemainder.containsKey(remainder)) {
                 ans += freqOfRemainder.get(remainder);
             }
-
+            // push the remainder
             freqOfRemainder.put(remainder, freqOfRemainder.getOrDefault(remainder, 0) + 1);
         }
 

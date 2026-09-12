@@ -1,6 +1,8 @@
 package Array.SlidingWindow;
 
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class SlidingWindowMaximum {
@@ -24,53 +26,70 @@ public class SlidingWindowMaximum {
     1  3  -1  -3 [5  3  6] 7       6
     1  3  -1  -3  5 [3  6  7]      7
     
-    Approach - Create a priority queue sorted in descending order of num
-    
-    for each window, pop the elements who are out of range,
-    then push the curr el and the el on top will be the max el.
+    Approach - Create a deque, first for window of size k, push all the elements from last, while pushing, pop out all the elements from back whose value is less or equal to than curr,
+            we will have our first max in the front of the queue, run the loop for rest of the elements, for each iteration
+            pop the elements whho does not belong to the current window from the front of the queue.
+            then, pop the elements from last of the queue whose value is less than current element, then get max from front.
     
     */
 
+
     public int[] maxSlidingWindow(int[] nums, int k) {
-        
+
         int n = nums.length;
+
+        if (k > n) {
+            return new int[] {};
+        }
+
+        Deque<Pair<Integer, Integer>> queue = new LinkedList<>();
+
+        // push the first k elements in sorted order, pop the min from back and insert from back
+        for (int i = 0; i < k; i++) {
+            while (!queue.isEmpty() && queue.getLast().num <= nums[i]) {
+                queue.pollLast();
+            }
+
+            queue.addLast(new Pair<>(nums[i], i));
+        }
 
         int ans[] = new int[n - k + 1];
 
-        PriorityQueue<Pair<Integer, Integer>> elWithPos = new PriorityQueue<>(
-            (a, b) -> b.first - a.first
-        );
+        ans[0] = queue.getFirst().num; // we will have first at the front
 
-        for (int i = 0; i < k; i++) {
-            elWithPos.add(new Pair<>(nums[i], i));
-        }
 
-        ans[0] = elWithPos.peek().first;
-
-        for (int i = k; i < n; i++) {
-            while (!elWithPos.isEmpty() && elWithPos.peek().second < i - k + 1) {
-                elWithPos.poll();
+        for (int i = k, ind = 1; i < n && ind < (n - k + 1); i++, ind++) {
+            // remove the elements from front who are out of bound for current window
+            while (!queue.isEmpty() && queue.getFirst().pos <= (i - k)) {
+                queue.pollFirst();
             }
-            elWithPos.add(new Pair<>(nums[i], i));
+            // remove elements from back whose value is less than current
+            while (!queue.isEmpty() && queue.getLast().num <= nums[i]) {
+                queue.pollLast();
+            }
 
-            ans[i - k + 1] = elWithPos.peek().first;
+            // add from the last
+            queue.addLast(new Pair<>(nums[i], i));
+            // max will the element at the front
+            ans[ind] = queue.getFirst().num;
         }
-
+        
         return ans;
+
     }
 
     class Pair<K, V> {
-        K first;
-        V second;
+        K num;
+        V pos;
 
-        Pair(K first, V second) {
-            this.first = first;
-            this.second = second;
+        Pair(K num, V pos) {
+            this.num = num;
+            this.pos = pos;
         }
     }
 
     public static void main(String[] args) {
-        int arr[] = { 1, 3, -1, -3, 5, 3, 6, 7 };
+        int arr[] = { 3, 1, 1, 3 };
 
         SlidingWindowMaximum obj = new SlidingWindowMaximum();
 

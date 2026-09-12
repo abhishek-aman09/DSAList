@@ -11,7 +11,7 @@ public class SubarraySumEqualsK {
         Approach : User prefix sum and hashmap based approach
         
         calculate prefix sum and strore them in map with frequency
-        for any sum chech the rem you need to get the su of subarray
+        for any sum chech the rem you need to get the sum of subarray
         if it exist in map, add the freq in the ans.
     */
     

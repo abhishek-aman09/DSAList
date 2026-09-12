@@ -8,10 +8,27 @@ public class MaximumSumOfKDistinc {
     // https://leetcode.com/problems/maximum-sum-of-distinct-subarrays-with-length-k/description/
 
     /*You are given an integer array nums and an integer k. Find the maximum subarray sum of all the subarrays of nums that meet the following conditions:
+    
+    The length of the subarray is k, and
+    All the elements of the subarray are distinct.
+    Return the maximum subarray sum of all the subarrays that meet the conditions. If no subarray meets the conditions, return 0.
+    
+    A subarray is a contiguous non-empty sequence of elements within an array.
+    
+    Input: nums = [1,5,4,2,9,9,9], k = 3
+    Output: 15
+    Explanation: The subarrays of nums with length 3 are:
+    - [1,5,4] which meets the requirements and has a sum of 10.
+    - [5,4,2] which meets the requirements and has a sum of 11.
+    - [4,2,9] which meets the requirements and has a sum of 15.
+    - [2,9,9] which does not meet the requirements because the element 9 is repeated.
+    - [9,9,9] which does not meet the requirements because the element 9 is repeated.
+    We return 15 because it is the maximum subarray sum of all the subarrays that meet the conditions
+    
+    Approach : create a hashmap to store frequency of elements of window of size k. First push k elements into the map, if the size of map is k, we have all unique
+    continue this approach from k + 1 to n, maintain the left pointer, decrease the freq of el at left pointer, if freq reaches 0, remove it from map.
 
-        The length of the subarray is k, and
-        All the elements of the subarray are distinct.
-        Return the maximum subarray sum of all the subarrays that meet the conditions. If no subarray meets the conditions, return 0.
+    if the size of map is k after operation in each iteration, calculate the max sum
      * 
      */
     
@@ -25,66 +42,35 @@ public class MaximumSumOfKDistinc {
             return 0;
         }
 
-        Map<Integer, Integer> freq = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
 
-        int isRepeating = 0;
-
-        long tempSum = 0l;
-        int i = 0;
-
-        while (i < k) {
-            if (freq.containsKey(nums[i]) == false) {
-                freq.put(nums[i], 0);
-            }
-
-            if (freq.get(nums[i]) > 0) {
-                isRepeating++;
-            }
-
-            freq.put(nums[i], freq.get(nums[i]) + 1);
-
-            tempSum += nums[i];
-            i++;
+        long sum = 0;
+        // push the freq of the elements into the hashmap
+        for(int i = 0; i < k; i++) {
+            sum += nums[i];
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
         }
 
-        if (isRepeating == 0) {
-            ans = Long.max(ans, tempSum);
+        if(map.size() == k) { // if size is k, we have all unique elements
+            ans = sum;
         }
 
-        while (i < n) {
+        int left = 0; // we have left pointer
 
-            if (freq.containsKey(nums[i]) == false) {
-                freq.put(nums[i], 0);
+        for(int i = k; i < n; i++, left++) { // for each element from k to n - 1
+            map.put(nums[left], map.get(nums[left]) - 1); // reduce frequency
+            sum -= nums[left]; // decrease the sum
+
+            if(map.get(nums[left]) == 0) { // if freq reached zero, remove it from map
+                map.remove(nums[left]);
             }
 
-            // removing the left element 
-            tempSum -= nums[i - k];
+            map.put(nums[i], map.getOrDefault(nums[i], 0) + 1); // add current el into map and update the sum
+            sum += nums[i];
 
-            // adding the right element
-            tempSum += nums[i];
-
-            // reducing the frequecy of left el by one
-            freq.put(nums[i - k], freq.get(nums[i - k]) - 1);
-
-            // checking if removal of left el is making the current subarray
-            // distict
-            if (freq.get(nums[i - k]) >= 1) {
-                isRepeating--;
+            if(map.size() == k) { // if size of map is k, we have k elements
+                ans = Math.max(ans, sum);
             }
-            
-
-            if (freq.get(nums[i]) > 0) {
-                isRepeating++;
-            }
-
-            freq.put(nums[i], freq.get(nums[i]) + 1);
-
-            if (isRepeating == 0) {
-                ans = Long.max(ans, tempSum);
-            }
-
-            i++;
-
         }
 
         return ans;
