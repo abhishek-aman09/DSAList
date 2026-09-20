@@ -1,4 +1,4 @@
-package Graph;
+package Graph.Dijkstras;
 
 import java.util.ArrayList;
 import java.util.Arrays;
